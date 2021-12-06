@@ -1,3 +1,4 @@
+using System.Text.Json;
 using MailKit;
 using MailKit.Net.Imap;
 using MailKit.Search;
@@ -40,12 +41,31 @@ public class Worker : BackgroundService
                 for (int index = 0; index < unreadMessageIds.Count; index++)
                 {
                     var message = await inbox.GetMessageAsync(unreadMessageIds[index], stoppingToken);
-                    _logger.LogInformation("[{messageId}] Subject: {subject}", message.MessageId, message.Subject);
                     var headers = message.Headers;
                     var from = headers.Single(header => header.Field == "From");
+                    bool.TryParse(headers.SingleOrDefault(header => header.Field == "POC-Mailing__IsFeatureRequest")?.Value, out bool isFeatureRequest);
 
-                    _logger.LogInformation("[{messageId}] Sender: {sender}", message.MessageId, from.Value);
-                    _logger.LogInformation("[{messageId}] Body: {body}", message.MessageId, message.HtmlBody);
+                    _logger.LogInformation("Message ID: {messageId}", message.MessageId);
+                    _logger.LogInformation("Sender: {sender}", from.Value);
+                    _logger.LogInformation("Is Feature Request: {isFeatureRequest}", isFeatureRequest);
+
+                    if (isFeatureRequest)
+                    {
+                       try  
+                       {
+                            var featureRequest = JsonSerializer.Deserialize<FeatureRequest>(message.TextBody);
+
+                            if (featureRequest is not null)
+                            {
+                                _logger.LogInformation("Feature Request, First Name: {firstName}, Last Name: {lastName}, Date of Birth: {birthDate:yyyy-MM-dd}, Age: {age}", featureRequest.FirstName, featureRequest.LastName, featureRequest.BirthDate, featureRequest.Age);
+                            }
+                       }
+                       catch (JsonException ex)
+                       {
+                           _logger.LogError(ex, "Failed to deserialize content: {content}", message.TextBody);
+                       }
+                    }
+
                     await inbox.AddFlagsAsync(unreadMessageIds[index], MessageFlags.Seen, true, stoppingToken);
                 }
             }
@@ -70,4 +90,12 @@ public record ImapSettingsConfig
     public bool Ssl { get; init; }
     public string Login { get; init; } = "";
     public string Password { get; init; } = "";
+}
+
+public record FeatureRequest
+{
+    public string FirstName { get; init; } = "";
+    public string LastName { get; init; } = "";
+    public DateTime BirthDate { get; init; }
+    public int Age { get; init; }
 }
