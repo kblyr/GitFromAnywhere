@@ -37,7 +37,8 @@ sealed class CreateFeatureRequestConsumer : IConsumer<CreateFeatureRequest>
         }
         catch (Exception ex)
         {
-
+            _logger.LogError(ex, "Failed to create feature request");
+            throw;
         }
 
         if (createdFeatureRequest is null)
