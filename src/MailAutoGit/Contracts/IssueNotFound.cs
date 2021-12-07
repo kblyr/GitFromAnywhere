@@ -1,6 +1,6 @@
 namespace MailAutoGit.Contracts;
 
-public record FeatureRequestNotFound
+public record IssueNotFound
 {
     public long RepositoryId { get; init; }
     public int Number { get; init; }

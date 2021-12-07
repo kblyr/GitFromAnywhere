@@ -1,10 +1,9 @@
-namespace MailAutoGit.Events;
+namespace MailAutoGit.Requests;
 
-public record FeatureRequestCreated
+public record CreateIssue
 {
     public long RepositoryId { get; init; }
-    public int Number { get; init; }
     public string Title { get; init; } = "";
+    public string Description { get; init; } = "";
     public string SubscriberEmailAddress { get; init; } = "";
-    public bool IsOpen { get; init; }
 }

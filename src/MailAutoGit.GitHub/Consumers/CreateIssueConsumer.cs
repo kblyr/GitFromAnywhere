@@ -3,18 +3,18 @@ using MailAutoGit.Events;
 
 namespace MailAutoGit.Consumers;
 
-sealed class CreateFeatureRequestConsumer : IConsumer<CreateFeatureRequest>
+sealed class CreateIssueConsumer : IConsumer<CreateIssue>
 {
-    readonly ILogger<CreateFeatureRequestConsumer> _logger;
+    readonly ILogger<CreateIssueConsumer> _logger;
     readonly GitHubClientFactory _clientFactory;
 
-    public CreateFeatureRequestConsumer(ILogger<CreateFeatureRequestConsumer> logger, GitHubClientFactory clientFactory)
+    public CreateIssueConsumer(ILogger<CreateIssueConsumer> logger, GitHubClientFactory clientFactory)
     {
         _logger = logger;
         _clientFactory = clientFactory;
     }
 
-    public async Task Consume(ConsumeContext<CreateFeatureRequest> context)
+    public async Task Consume(ConsumeContext<CreateIssue> context)
     {
         var client = _clientFactory.CreateClient();
 
@@ -23,37 +23,37 @@ sealed class CreateFeatureRequestConsumer : IConsumer<CreateFeatureRequest>
             Body = context.Message.Description,
         };
 
-        Issue? createdFeatureRequest = null;
+        Issue? createdIssue = null;
 
         try 
         {
-            createdFeatureRequest = await client.Issue.Create(context.Message.RepositoryId, new NewIssue(context.Message.Title)
+            createdIssue = await client.Issue.Create(context.Message.RepositoryId, new NewIssue(context.Message.Title)
             {
                 Body = context.Message.Description
             }).ConfigureAwait(false);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to create feature request");
+            _logger.LogError(ex, "Failed to create issue");
             throw;
         }
 
-        if (createdFeatureRequest is null)
+        if (createdIssue is null)
             return;
 
-        FeatureRequestCreated @event = new()
+        IssueCreated @event = new()
         {
-            RepositoryId = createdFeatureRequest.Repository.Id,
-            Number = createdFeatureRequest.Number,
-            Title = createdFeatureRequest.Title,
+            RepositoryId = createdIssue.Repository.Id,
+            Number = createdIssue.Number,
+            Title = createdIssue.Title,
             SubscriberEmailAddress = context.Message.SubscriberEmailAddress,
-            IsOpen = createdFeatureRequest.State == ItemState.Open
+            IsOpen = createdIssue.State == ItemState.Open
         };
 
         try 
         {
             _logger.LogDebug("Publishing event: {event} | Repository ID: {repositoryId}, Number: {number}, Title: {title}", 
-                nameof(FeatureRequestCreated), 
+                nameof(IssueCreated), 
                 @event.RepositoryId, 
                 @event.Number, 
                 @event.Title);
@@ -62,7 +62,7 @@ sealed class CreateFeatureRequestConsumer : IConsumer<CreateFeatureRequest>
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to publish event: {event} | Repository ID: {repositoryId}, Number: {number}, Title: {title}", 
-                nameof(FeatureRequestCreated), 
+                nameof(IssueCreated), 
                 @event.RepositoryId, 
                 @event.Number, 
                 @event.Title);

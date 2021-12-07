@@ -1,10 +1,10 @@
 namespace MailAutoGit.StateMachines;
 
-sealed class FeatureRequestStateMachine : MassTransitStateMachine<FeatureRequestInstance>
+sealed class IssueStateMachine : MassTransitStateMachine<IssueInstance>
 {
-    readonly ILogger<FeatureRequestStateMachine> _logger;
+    readonly ILogger<IssueStateMachine> _logger;
 
-    public FeatureRequestStateMachine(ILogger<FeatureRequestStateMachine> logger)
+    public IssueStateMachine(ILogger<IssueStateMachine> logger)
     {
         _logger = logger;
         ConfigureEvents();
@@ -15,25 +15,25 @@ sealed class FeatureRequestStateMachine : MassTransitStateMachine<FeatureRequest
 
     public State Created { get; private set; } = default!;
 
-    public Event<FeatureRequestCreated> OnFeatureRequestCreated { get; private set; } = default!;
-    public Event<CreatedFeatureRequestEmailSentToSubscriber> OnCreatedFeatureRequestEmailSentToSubscriber { get; private set; } = default!;
+    public Event<IssueCreated> OnIssueCreated { get; private set; } = default!;
+    public Event<CreatedIssueEmailSentToSubscriber> OnCreatedIssueEmailSentToSubscriber { get; private set; } = default!;
 
     void ConfigureEvents()
     {
-        Event(() => OnFeatureRequestCreated, 
+        Event(() => OnIssueCreated, 
             correlation => {
                 correlation.CorrelateBy((instance, context) => 
-                    instance.FeatureRequest.RepositoryId == context.Message.RepositoryId &&
-                    instance.FeatureRequest.Number == context.Message.Number
+                    instance.Issue.RepositoryId == context.Message.RepositoryId &&
+                    instance.Issue.Number == context.Message.Number
                 ).SelectId(context => NewId.NextGuid());
             }
         );
 
-        Event(() => OnCreatedFeatureRequestEmailSentToSubscriber,
+        Event(() => OnCreatedIssueEmailSentToSubscriber,
             correlation => {
                 correlation.CorrelateBy((instance, context) =>
-                    instance.FeatureRequest.RepositoryId == context.Message.RepositoryId &&
-                    instance.FeatureRequest.Number == context.Message.Number);
+                    instance.Issue.RepositoryId == context.Message.RepositoryId &&
+                    instance.Issue.Number == context.Message.Number);
             }
         );
     }
@@ -41,10 +41,10 @@ sealed class FeatureRequestStateMachine : MassTransitStateMachine<FeatureRequest
     void ConfigureEventActivities()
     {
         Initially(
-            When(OnFeatureRequestCreated)
+            When(OnIssueCreated)
                 .Then(context => {
-                    _logger.LogInformation("Feature request created | Repository ID: {repositoryId}, Number: {number}, Title: {title}", context.Data.RepositoryId, context.Data.Number, context.Data.Title);
-                    context.Instance.FeatureRequest = new()
+                    _logger.LogInformation("Issue created | Repository ID: {repositoryId}, Number: {number}, Title: {title}", context.Data.RepositoryId, context.Data.Number, context.Data.Title);
+                    context.Instance.Issue = new()
                     {
                         RepositoryId = context.Data.RepositoryId,
                         Number = context.Data.Number,
@@ -52,7 +52,7 @@ sealed class FeatureRequestStateMachine : MassTransitStateMachine<FeatureRequest
                         IsSubscriberNotified = false
                     };
                 })
-                .Send(context => new SendCreatedFeatureRequestEmailToSubscriber() {
+                .Send(context => new SendCreatedIssueEmailToSubscriber() {
                     RepositoryId = context.Data.RepositoryId,
                     Number = context.Data.Number,
                     Title = context.Data.Title,
@@ -62,23 +62,23 @@ sealed class FeatureRequestStateMachine : MassTransitStateMachine<FeatureRequest
         );
 
         During(Created,
-            When(OnCreatedFeatureRequestEmailSentToSubscriber)
+            When(OnCreatedIssueEmailSentToSubscriber)
                 .Then(context => {
                     _logger.LogInformation("Subscriber notified | Repository ID: {repositoryId}, Number: {number}", context.Data.RepositoryId, context.Data.Number);
-                    context.Instance.FeatureRequest.IsSubscriberNotified = true;
+                    context.Instance.Issue.IsSubscriberNotified = true;
                 })
         );
     }
 }
 
-public record FeatureRequestInstance : SagaStateMachineInstance
+public record IssueInstance : SagaStateMachineInstance
 {
     public Guid CorrelationId { get; set; }
     public string CurrentState { get; set; } = "";
 
-    public FeatureRequestObj FeatureRequest { get; set; } = default!;
+    public IssueObj Issue { get; set; } = default!;
 
-    public record FeatureRequestObj
+    public record IssueObj
     {
         public long RepositoryId { get; set; }
         public int Number { get; set; }

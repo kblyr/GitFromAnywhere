@@ -1,6 +1,6 @@
 namespace MailAutoGit.Requests;
 
-public record SendCreatedFeatureRequestEmailToSubscriber
+public record SendCreatedIssueEmailToSubscriber
 {
     public long RepositoryId { get; init; }
     public int Number { get; init; }
