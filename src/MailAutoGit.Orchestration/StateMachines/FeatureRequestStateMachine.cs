@@ -84,6 +84,7 @@ public record FeatureRequestInstance : SagaStateMachineInstance
         public int Number { get; set; }
         public string SubscriberEmailAddress { get; set; } = "";
         public bool IsSubscriberNotified { get; set; }
+        public bool IsOpen { get; set; }
     }
 }
 

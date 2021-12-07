@@ -41,20 +41,31 @@ sealed class CreateFeatureRequestConsumer : IConsumer<CreateFeatureRequest>
         if (createdFeatureRequest is null)
             return;
 
+        FeatureRequestCreated @event = new()
+        {
+            RepositoryId = createdFeatureRequest.Repository.Id,
+            Number = createdFeatureRequest.Number,
+            Title = createdFeatureRequest.Title,
+            SubscriberEmailAddress = context.Message.SubscriberEmailAddress,
+            IsOpen = createdFeatureRequest.State == ItemState.Open
+        };
+
         try 
         {
-            _logger.LogDebug("Publishing event: {event}", nameof(FeatureRequestCreated));
-            await context.Publish<FeatureRequestCreated>(new()
-            {
-                RepositoryId = createdFeatureRequest.Repository.Id,
-                Number = createdFeatureRequest.Number,
-                Title = createdFeatureRequest.Title,
-                SubscriberEmailAddress = context.Message.SubscriberEmailAddress
-            }).ConfigureAwait(false);
+            _logger.LogDebug("Publishing event: {event} | Repository ID: {repositoryId}, Number: {number}, Title: {title}", 
+                nameof(FeatureRequestCreated), 
+                @event.RepositoryId, 
+                @event.Number, 
+                @event.Title);
+            await context.Publish(@event).ConfigureAwait(false);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to publish event: {event}", nameof(FeatureRequestCreated));
+            _logger.LogError(ex, "Failed to publish event: {event} | Repository ID: {repositoryId}, Number: {number}, Title: {title}", 
+                nameof(FeatureRequestCreated), 
+                @event.RepositoryId, 
+                @event.Number, 
+                @event.Title);
             throw;
         }
     }
