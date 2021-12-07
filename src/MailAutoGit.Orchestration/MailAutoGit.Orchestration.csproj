@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MassTransit" Version="7.2.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MailAutoGit\MailAutoGit.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Automatonymous" />
+    <Using Include="MailAutoGit.Events" />
+    <Using Include="MailAutoGit.Requests" />
+    <Using Include="MassTransit" />
+    <Using Include="Microsoft.Extensions.Logging" />
+  </ItemGroup>
+
+</Project>
