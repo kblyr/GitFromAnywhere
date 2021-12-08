@@ -1,2 +1,2 @@
-# MailAutoGit
-An experimental project for automating the creation of issue in GitHub from an email that follows a defined pattern
+# GitFromAnywhere (GFA)
+An experimental project that allows users to create issues to their repositories from anywhere
