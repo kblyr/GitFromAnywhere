@@ -7,13 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MailAutoGit\MailAutoGit.csproj" />
+    <ProjectReference Include="..\GFA\GFA.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Using Include="MassTransit" />
-    <Using Include="MailAutoGit" />
-    <Using Include="MailAutoGit.Requests" />
+    <Using Include="GFA" />
+    <Using Include="GFA.Events" />
+    <Using Include="GFA.Requests" />
     <Using Include="Microsoft.Extensions.Logging" />
     <Using Include="Microsoft.Extensions.Options" />
     <Using Include="Octokit" />

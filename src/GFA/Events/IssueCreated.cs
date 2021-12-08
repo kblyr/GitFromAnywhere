@@ -1,9 +1,10 @@
-namespace MailAutoGit.Requests;
+namespace GFA.Events;
 
-public record CreateIssue
+public record IssueCreated
 {
     public long RepositoryId { get; init; }
+    public int Number { get; init; }
     public string Title { get; init; } = "";
-    public string Description { get; init; } = "";
     public string SubscriberEmailAddress { get; init; } = "";
+    public bool IsOpen { get; init; }
 }

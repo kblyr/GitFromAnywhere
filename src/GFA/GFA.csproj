@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Using Include="MailAutoGit" />
-    <Using Include="MailAutoGit.Events" />
-    <Using Include="MailAutoGit.Requests" />
+    <Using Include="GFA" />
+    <Using Include="GFA.Events" />
+    <Using Include="GFA.Requests" />
     <Using Include="Microsoft.Extensions.Logging" />
   </ItemGroup>
 

@@ -5,13 +5,13 @@ VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{ACE69FB8-0985-4231-9819-9501498BD4D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailAutoGit", "src\MailAutoGit\MailAutoGit.csproj", "{E8716140-F2CD-4D07-AD1B-0C54B681C877}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GFA", "src\GFA\GFA.csproj", "{E8716140-F2CD-4D07-AD1B-0C54B681C877}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailAutoGit.GitHub", "src\MailAutoGit.GitHub\MailAutoGit.GitHub.csproj", "{A2E50371-97FF-4432-86A8-6D5B57BB6ED4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GFA.GitHub", "src\GFA.GitHub\GFA.GitHub.csproj", "{A2E50371-97FF-4432-86A8-6D5B57BB6ED4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailAutoGit.Orchestration", "src\MailAutoGit.Orchestration\MailAutoGit.Orchestration.csproj", "{832828C0-3033-453A-9B3F-9F65EA20511C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GFA.Orchestration", "src\GFA.Orchestration\GFA.Orchestration.csproj", "{832828C0-3033-453A-9B3F-9F65EA20511C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailAutoGit.Mailkit", "src\MailAutoGit.Mailkit\MailAutoGit.Mailkit.csproj", "{FE359FD2-D66E-4B74-933B-D57A1BF46919}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GFA.Mailkit", "src\GFA.Mailkit\GFA.Mailkit.csproj", "{FE359FD2-D66E-4B74-933B-D57A1BF46919}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

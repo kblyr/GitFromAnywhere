@@ -1,4 +1,4 @@
-namespace MailAutoGit;
+namespace GFA;
 
 public enum GitHubClientAuthenticationMode : byte
 {

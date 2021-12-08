@@ -1,8 +1,8 @@
-namespace MailAutoGit;
+namespace GFA;
 
 public record GitHubClientOptions
 {
-    public string ProductHeader { get; init; } = "MailAutoGit";
+    public string ProductHeader { get; init; } = "GFA";
     public GitHubClientAuthenticationMode AuthenticationMode { get; init; } = GitHubClientAuthenticationMode.Token;
     public BasicAuthObj? BasicAuth { get; init; }
     public TokenAuthObj? TokenAuth { get; init; }

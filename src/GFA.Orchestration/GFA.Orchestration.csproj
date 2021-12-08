@@ -7,17 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Mailkit" Version="2.15.0" />
     <PackageReference Include="MassTransit" Version="7.2.4" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MailAutoGit\MailAutoGit.csproj" />
+    <ProjectReference Include="..\GFA\GFA.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <Using Include="Automatonymous" />
+    <Using Include="GFA.Events" />
+    <Using Include="GFA.Requests" />
     <Using Include="MassTransit" />
-    <Using Include="MailAutoGit.Requests" />
+    <Using Include="Microsoft.Extensions.Logging" />
   </ItemGroup>
 
 </Project>

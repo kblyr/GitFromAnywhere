@@ -1,4 +1,4 @@
-namespace MailAutoGit.StateMachines;
+namespace GFA.StateMachines;
 
 sealed class IssueStateMachine : MassTransitStateMachine<IssueInstance>
 {

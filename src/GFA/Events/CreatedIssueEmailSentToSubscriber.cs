@@ -1,4 +1,4 @@
-namespace MailAutoGit.Events;
+namespace GFA.Events;
 
 public record CreatedIssueEmailSentToSubscriber
 {

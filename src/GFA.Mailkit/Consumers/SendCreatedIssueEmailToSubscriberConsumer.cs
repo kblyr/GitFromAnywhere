@@ -1,4 +1,4 @@
-namespace MailAutoGit.Consumers;
+namespace GFA.Consumers;
 
 sealed class SendCreatedIssueEmailToSubscriberConsumer : IConsumer<SendCreatedIssueEmailToSubscriber>
 {

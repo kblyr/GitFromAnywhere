@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 
-namespace MailAutoGit.Configuraiton;
+namespace GFA.Configuraiton;
 
 public record SmtpClientConfiguration
 {

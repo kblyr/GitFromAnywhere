@@ -1,7 +1,4 @@
-
-using MailAutoGit.Events;
-
-namespace MailAutoGit.Consumers;
+namespace GFA.Consumers;
 
 sealed class CreateIssueConsumer : IConsumer<CreateIssue>
 {
